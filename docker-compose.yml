@@ -1,0 +1,25 @@
+version: '3.7'
+
+services:
+  nginx:
+    image: nginx:alpine
+    container_name: nginx-server_test
+    restart: always
+    ports:
+      - 9001:80
+      - 443:80
+    links:
+      - php
+    volumes:
+      - ./app:/var/www/html
+      - ./.docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
+      - ./.docker/nginx/ssl:/etc/nginx/conf.d/ssl
+
+  php:
+    image: php:8.0.23-fpm-alpine3.16
+    container_name: php-container
+    expose:
+      - 9000
+    volumes:
+      - ./app/:/var/www/html
+    restart: always
